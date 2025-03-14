@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <section class="result-container">
+        <div class="result-wrapper">
+            <h2>Generated Code Results</h2>
+            <div class="result-section">
+                <h3>Description</h3>
+                <p>{{ description }}</p>
+                <p><strong>Language:</strong> {{ language }}</p>
+            </div>
+
+            <div class="result-section code-display">
+                <h3>Original Code</h3>
+                <pre><code class="code-block">{{ original_code }}</code></pre>
+            </div>
+
+            <div class="result-section code-display">
+                <h3>Optimized Code</h3>
+                <pre><code class="code-block">{{ code }}</code></pre>
+            </div>
+
+            <div class="result-section">
+                <h3>Explanation</h3>
+                <p class="explanation">{{ explanation }}</p>
+            </div>
+
+            <div class="result-section">
+                <h3>Documentation</h3>
+                <div class="documentation">{{ documentation | safe }}</div>
+            </div>
+
+            <div class="result-section validation">
+                <h3>Validation Result</h3>
+                <p><strong>Status:</strong> <span class="status-{{ syntax_result.status }}">{{ syntax_result.status }}</span></p>
+                <p><strong>Message:</strong> {{ syntax_result.message }}</p>
+                {% if syntax_result.quality_report %}
+                <p><strong>Quality Report:</strong> <pre>{{ syntax_result.quality_report }}</pre></p>
+                {% endif %}
+            </div>
+
+            <div class="result-section validation">
+                <h3>Test Result</h3>
+                <p><strong>Status:</strong> <span class="status-{{ test_result.status }}">{{ test_result.status }}</span></p>
+                <p><strong>Output:</strong> <pre>{{ test_result.output }}</pre></p>
+            </div>
+
+            <div class="result-section">
+                <h3>Collaboration</h3>
+                <p>{{ collab_hint }}</p>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{{ url_for('export', code_id=code_id) }}" class="btn btn-secondary">Export Code</a>
+            </div>
+
+            <div class="feedback-section">
+                <h3>Provide Feedback</h3>
+                <form action="{{ url_for('feedback') }}" method="post" class="feedback-form">
+                    <input type="hidden" name="code_id" value="{{ code_id }}">
+                    <div class="form-group">
+                        <label for="rating">Rating (1-5)</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea id="comment" name="comment" placeholder="Your feedback..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
